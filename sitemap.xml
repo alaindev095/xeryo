@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Xeryo sitemap. %%SITE_URL%% is replaced by scripts/build.mjs with the siteUrl
+  from site.config.json. List only canonical, indexable pages (never 404.html).
+  Update <lastmod> (YYYY-MM-DD) only when a page's content meaningfully changes.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>%%SITE_URL%%/</loc>
+    <lastmod>2026-10-22</lastmod>
+  </url>
+  <url>
+    <loc>%%SITE_URL%%/about.html</loc>
+    <lastmod>2026-10-22</lastmod>
+  </url>
+  <url>
+    <loc>%%SITE_URL%%/ventures.html</loc>
+    <lastmod>2026-10-22</lastmod>
+  </url>
+  <url>
+    <loc>%%SITE_URL%%/umunara-internship.html</loc>
+    <lastmod>2026-10-22</lastmod>
+  </url>
+  <url>
+    <loc>%%SITE_URL%%/contact.html</loc>
+    <lastmod>2026-10-22</lastmod>
+  </url>
+</urlset>

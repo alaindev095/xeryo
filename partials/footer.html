@@ -1,0 +1,47 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        {{> wordmark}}
+        <p class="footer-about">Xeryo is a technology company building useful digital products, starting in Rwanda. Umunara Internship is our first.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <div class="footer-col">
+          <h2 class="footer-heading">Company</h2>
+          <ul class="footer-links">
+            <li><a href="/about.html">About Xeryo</a></li>
+            <li><a href="/ventures.html">Ventures</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h2 class="footer-heading">Product</h2>
+          <ul class="footer-links">
+            <li><a href="/umunara-internship.html">Umunara Internship</a></li>
+            <!--IF:APP--><li><a href="%%APP_URL%%">Open the application</a></li><!--/IF:APP-->
+          </ul>
+        </div>
+        <!--IF:EMAIL-->
+        <div class="footer-col">
+          <h2 class="footer-heading">Email</h2>
+          <ul class="footer-links">
+            <li><a href="mailto:%%EMAIL%%">%%EMAIL%%</a></li>
+          </ul>
+        </div>
+        <!--/IF:EMAIL-->
+        <!--IF:SOCIAL-->
+        <div class="footer-col">
+          <h2 class="footer-heading">Follow</h2>
+          <ul class="footer-links">
+            %%SOCIAL_LINKS%%
+          </ul>
+        </div>
+        <!--/IF:SOCIAL-->
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; %%YEAR%% Xeryo. All rights reserved.</p>
+      <p>One product today. A bigger vision for tomorrow.</p>
+    </div>
+  </div>
+</footer>

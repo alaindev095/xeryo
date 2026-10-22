@@ -1,0 +1,9 @@
+# Xeryo robots.txt
+# Public pages, CSS, JavaScript and images may all be crawled.
+# robots.txt controls crawling only; it does not guarantee that a URL
+# stays out of search results (use a noindex tag for that).
+
+User-agent: *
+Allow: /
+
+Sitemap: %%SITE_URL%%/sitemap.xml

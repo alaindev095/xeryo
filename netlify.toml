@@ -1,0 +1,54 @@
+# Netlify configuration for the Xeryo website.
+# Production: set XERYO_SITE_URL (and optionally XERYO_APP_URL, XERYO_CONTACT_EMAIL)
+# in Site configuration > Environment variables, or fill in site.config.json.
+
+[build]
+  command = "node scripts/build.mjs"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Branch deploys and deploy previews are never indexable.
+[context.deploy-preview]
+  command = "node scripts/build.mjs --preview"
+
+[context.branch-deploy]
+  command = "node scripts/build.mjs --preview"
+
+# One canonical URL for the homepage.
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+# Netlify serves /404.html automatically for unknown paths (HTTP 404).
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"

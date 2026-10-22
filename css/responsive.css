@@ -1,0 +1,173 @@
+/* ==========================================================================
+   Responsive rules (mobile first)
+   Breakpoints: 48em (768px), 60em (960px), 72em (1152px)
+   ========================================================================== */
+
+/* ---------- Below 60em: mobile / tablet navigation ---------- */
+
+@media (max-width: 59.9375em) {
+  /* Without JavaScript the navigation simply wraps beneath the wordmark. */
+  .header-inner {
+    flex-wrap: wrap;
+    padding-block: 0.75rem;
+  }
+
+  .site-nav {
+    flex: 1 0 100%;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+  }
+
+  .nav-list {
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+  }
+
+  /* With JavaScript the navigation becomes a full-screen panel. */
+  .js .nav-toggle {
+    display: inline-flex;
+  }
+
+  .js .header-inner {
+    flex-wrap: nowrap;
+    padding-block: 0;
+  }
+
+  .js .site-nav {
+    position: fixed;
+    inset: var(--header-h) 0 0 0;
+    z-index: 40;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 2rem;
+    padding: 1.5rem var(--gutter) 3rem;
+    overflow-y: auto;
+    background: var(--paper);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-0.5rem);
+    transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease),
+      visibility 0s linear var(--dur);
+  }
+
+  .js .site-nav.is-open {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition-delay: 0s;
+  }
+
+  .js .nav-list {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .js .nav-link {
+    display: block;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--color-line);
+    font-size: 1.75rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+
+  .js .nav-link::after {
+    display: none;
+  }
+
+  .js .nav-cta {
+    align-self: flex-start;
+    min-height: 3rem;
+    padding-inline: 1.5rem;
+    font-size: 1rem;
+  }
+
+  html.nav-open,
+  html.nav-open body {
+    overflow: hidden;
+  }
+}
+
+/* ---------- 48em and up: tablets ---------- */
+
+@media (min-width: 48em) {
+  .row {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: 2rem;
+  }
+
+  .footer-top {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 3rem;
+  }
+
+  .statement-inner {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 2rem;
+  }
+
+  .grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .principle {
+    grid-template-columns: 4rem 1fr;
+  }
+}
+
+/* ---------- 60em and up: laptops ---------- */
+
+@media (min-width: 60em) {
+  .nav-toggle {
+    display: none !important;
+  }
+
+  .hero-grid {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+
+  .hero-visual {
+    justify-self: end;
+  }
+
+  .split {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  }
+
+  .split-even {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .split-sticky > :first-child {
+    position: sticky;
+    top: calc(var(--header-h) + 2rem);
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ---------- 72em and up: large screens ---------- */
+
+@media (min-width: 72em) {
+  .hero-visual {
+    width: min(100%, 30rem);
+  }
+}
+
+/* ---------- Small phones ---------- */
+
+@media (max-width: 29.9375em) {
+  .actions .btn {
+    flex: 1 1 100%;
+  }
+
+  .actions .link-arrow {
+    flex: 1 1 100%;
+  }
+}

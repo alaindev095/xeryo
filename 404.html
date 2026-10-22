@@ -1,0 +1,36 @@
+<!--meta
+{
+  "title": "Page not found | Xeryo",
+  "description": "The page you were looking for could not be found. Return to the Xeryo homepage, ventures or contact page.",
+  "path": "/404.html",
+  "noindex": true
+}
+-->
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+{{> head}}
+</head>
+<body>
+{{> header}}
+
+<main id="main" tabindex="-1">
+  <section class="page-hero" aria-labelledby="page-title">
+    <div class="container page-hero-inner">
+      <p class="not-found-code" aria-hidden="true">404</p>
+      <h1 class="display-md" id="page-title">This page could not be found.</h1>
+      <p class="lead">The address may have been mistyped, or the page may have moved. Here are a few places to continue from.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="/">Go to the homepage</a>
+        <a class="btn btn-secondary" href="/ventures.html">View ventures</a>
+        <a class="link-arrow" href="/contact.html">Contact Xeryo</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+{{> footer}}
+
+<script src="/js/navigation.js" defer></script>
+</body>
+</html>

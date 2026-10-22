@@ -1,0 +1,17 @@
+{
+  "name": "xeryo-website",
+  "version": "1.0.0",
+  "description": "Corporate website for Xeryo: static HTML, CSS and vanilla JavaScript.",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:strict": "node scripts/build.mjs --strict",
+    "build:preview": "node scripts/build.mjs --preview",
+    "serve": "node scripts/serve.mjs",
+    "dev": "node scripts/build.mjs --preview && node scripts/serve.mjs"
+  }
+}

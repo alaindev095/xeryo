@@ -1,0 +1,66 @@
+/* ==========================================================================
+   Xeryo design tokens
+   All colours, type sizes, spacing and motion values live here.
+   ========================================================================== */
+
+:root {
+  /* Colour: black, white and neutral grays only */
+  --ink: #0a0a0a;
+  --paper: #ffffff;
+  --gray-50: #f7f7f7;
+  --gray-100: #efefef;
+  --gray-200: #e2e2e2;
+  --gray-300: #cdcdcd;
+  --gray-400: #a8a8a8;
+  --gray-500: #6b6b6b;   /* 5.3:1 on white, 5:1 on gray-50 */
+  --gray-600: #555555;
+  --gray-800: #262626;
+  --gray-900: #141414;
+
+  --color-bg: var(--paper);
+  --color-text: var(--ink);
+  --color-muted: var(--gray-500);
+  --color-line: var(--gray-200);
+  --color-surface: var(--gray-50);
+  --focus: var(--ink);
+
+  /* Typography: system stack, no web font requests */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", "Helvetica Neue",
+    Roboto, "Noto Sans", "Liberation Sans", Arial, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lead: clamp(1.1875rem, 1.05rem + 0.6vw, 1.5rem);
+  --text-h3: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);
+  --text-h2: clamp(2.125rem, 1.4rem + 3.2vw, 4rem);
+  --text-h1-md: clamp(2.5rem, 1.4rem + 4.4vw, 4.75rem);
+  --text-h1: clamp(2.75rem, 1.2rem + 6.2vw, 6.25rem);
+
+  /* Layout */
+  --container: 75rem;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --section-y: clamp(4.5rem, 9vw, 8.5rem);
+  --header-h: 4rem;
+
+  /* Shape */
+  --radius: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-pill: 999px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur: 0.25s;
+}
+
+@media (min-width: 60em) {
+  :root {
+    --header-h: 4.5rem;
+  }
+}
+
+@media (min-width: 90em) {
+  :root {
+    --container: 82rem;
+  }
+}

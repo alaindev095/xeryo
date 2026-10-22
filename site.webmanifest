@@ -1,0 +1,13 @@
+{
+  "name": "Xeryo",
+  "short_name": "Xeryo",
+  "description": "Xeryo is a technology company building practical digital products.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    { "src": "/assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/icons/xeryo-logo-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
