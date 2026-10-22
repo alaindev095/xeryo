@@ -1,13 +1,14 @@
 {
-  "siteUrl": "",
-  "appUrl": "",
-  "contactEmail": "",
+  "siteUrl": "https://xeryo.vercel.app",
+  "appUrl": "https://xeryo.vercel.app",
+  "contactEmail": "umunara001@gmail.com",
   "social": {
-    "linkedin": "",
-    "x": "",
-    "instagram": "",
-    "facebook": "",
-    "youtube": "",
-    "github": ""
+    "linkedin": "https://linkedin.com",
+    "x": "https://x.com/alain_dev095",
+    "instagram": "https://instagram.com/m.alain.dev",
+    "facebook": "https://www.facebook.com/100056642540811",
+    "threads": "https://www.threads.com/@m.alain.250",
+    "youtube": "https://youtube.com/umunara001",
+    "github": "https://github.com/alaindev095"
   }
 }
