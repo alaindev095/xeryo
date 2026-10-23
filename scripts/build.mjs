@@ -1,15 +1,6 @@
 #!/usr/bin/env node
 /*
  * Xeryo static site build. Zero dependencies (Node 18+).
- *
- * Reads the source pages, shared partials and site.config.json, and writes a
- * plain static site to dist/. All SEO-critical markup (title, description,
- * canonical, Open Graph, JSON-LD) is written into the HTML at build time so
- * crawlers never depend on JavaScript.
- *
- *   node scripts/build.mjs             production build (requires siteUrl)
- *   node scripts/build.mjs --preview   preview/dev build: noindex, robots disallow
- *   node scripts/build.mjs --strict    also fail when optional values are missing
  */
 import { readFile, writeFile, mkdir, rm, cp, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
@@ -33,7 +24,7 @@ const SOCIAL_LABELS = {
   instagram: 'Instagram',
   facebook: 'Facebook',
   youtube: 'YouTube',
-  【entity-github¦canonical_name=GitHub】: '【entity-GitHub¦canonical_name=GitHub】',
+  github: 'GitHub',
 };
 
 const errors = [];
@@ -47,8 +38,6 @@ const esc = (value) =>
     .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
-
-/* ------------------------------------------------------------------ config */
 
 const fileConfig = JSON.parse(await readFile(path.join(ROOT, 'site.config.json'), 'utf8'));
 const env = process.env;
@@ -115,8 +104,6 @@ if (missing.length) {
   STRICT && !PREVIEW ? fail(text) : warn(text);
 }
 
-/* ---------------------------------------------------------------- partials */
-
 const partials = {};
 for (const name of ['head', 'wordmark', 'header', 'footer', 'cta']) {
   partials[name] = await readFile(path.join(ROOT, 'partials', `${name}.html`), 'utf8');
@@ -125,7 +112,7 @@ for (const name of ['head', 'wordmark', 'header', 'footer', 'cta']) {
 function includePartials(html, source) {
   let out = html;
   for (let pass = 0; pass < 3; pass++) {
-    out = out.replace(/\{\{\>\s*([\w-]+)\s*\}\}/g, (_, name) => {
+    out = out.replace(/\{\{>\s*([\w-]+)\s*\}\}/g, (_, name) => {
       if (!(name in partials)) {
         fail(`${source}: unknown partial "${name}".`);
         return '';
@@ -135,8 +122,6 @@ function includePartials(html, source) {
   }
   return out;
 }
-
-/* ----------------------------------------------------------- conditionals */
 
 const flags = {
   APP: Boolean(config.appUrl),
@@ -155,8 +140,6 @@ function applyConditionals(html, source) {
   });
   return out;
 }
-
-/* ------------------------------------------------------- generated markup */
 
 const socialLinks = Object.entries(config.social)
   .map(([key, url]) => `<li><a href="${esc(url)}" rel="me noopener">${SOCIAL_LABELS[key]}</a></li>`)
@@ -233,8 +216,6 @@ function buildJsonLd(meta) {
     .join('\n');
 }
 
-/* ------------------------------------------------------------------ pages */
-
 const rendered = {};
 const robotsMeta = PREVIEW ? '<meta name="robots" content="noindex, nofollow">' : null;
 
@@ -260,10 +241,7 @@ for (const name of PAGES) {
   html = html.slice(front[0].length);
 
   html = includePartials(html, `${name}.html`);
-
-  // Mark the current page in the navigation
   html = html.replace(/ data-nav="([\w-]+)"/g, (_, key) => (key === name ? ' aria-current="page"' : ''));
-
   html = applyConditionals(html, `${name}.html`);
 
   const indexable = !meta.noindex;
@@ -282,11 +260,8 @@ for (const name of PAGES) {
   };
   html = html.replace(/%%([A-Z_]+)%%/g, (whole, key) => (key in tokens ? tokens[key] : whole));
   html = html.replace(/\n{3,}/g, '\n\n');
-
   rendered[name] = { html, meta, indexable };
 }
-
-/* ----------------------------------------------------------------- output */
 
 if (errors.length) {
   report();
@@ -314,7 +289,7 @@ const robots = PREVIEW
 await writeFile(path.join(DIST, 'sitemap.xml'), sitemap);
 await writeFile(path.join(DIST, 'robots.txt'), robots);
 
-// --- FIX: Copy Google verification files and any other root html verification ---
+// --- FIX: Copy Google verification files ---
 try {
   const rootFiles = await readdir(ROOT);
   for (const file of rootFiles) {
@@ -327,9 +302,9 @@ try {
       }
     }
   }
-} catch {}
-
-/* ------------------------------------------------------------- validation */
+} catch (e) {
+  console.log('  verification copy warning:', e.message);
+}
 
 const distPath = (urlPath) => {
   const clean = urlPath.split('#')[0].split('?')[0];
@@ -368,7 +343,6 @@ for (const [name, page] of Object.entries(rendered)) {
     fail(`${label}: non-indexable page is missing a noindex robots tag.`);
   }
 
-  // Internal links and assets must exist; in-page anchors must have a target
   for (const match of html.matchAll(/\b(?:href|src)="([^"]+)"/g)) {
     const target = match[1];
     if (target.startsWith('#')) {
@@ -382,14 +356,11 @@ for (const [name, page] of Object.entries(rendered)) {
 if (!existsSync(distPath(OG_IMAGE_PATH))) fail(`Social preview image missing at ${OG_IMAGE_PATH}.`);
 if (!existsSync(distPath(LOGO_PATH))) fail(`Logo missing at ${LOGO_PATH}.`);
 
-// Sitemap must list exactly the indexable pages, using the configured origin
 const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 const expected = Object.values(rendered).filter((p) => p.indexable).map((p) => pageUrl(p.meta));
 for (const url of expected) if (!locs.includes(url)) fail(`sitemap.xml is missing ${url}.`);
 for (const url of locs) if (!expected.includes(url)) fail(`sitemap.xml lists ${url}, which is not an indexable page.`);
 if (new Set(locs).size !== locs.length) fail('sitemap.xml contains duplicate URLs.');
-
-/* ----------------------------------------------------------------- report */
 
 function report() {
   const mode = PREVIEW ? 'preview' : 'production';
