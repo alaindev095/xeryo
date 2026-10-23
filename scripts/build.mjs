@@ -11,7 +11,7 @@
  *   node scripts/build.mjs --preview   preview/dev build: noindex, robots disallow
  *   node scripts/build.mjs --strict    also fail when optional values are missing
  */
-import { readFile, writeFile, mkdir, rm, cp } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, rm, cp, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -33,7 +33,7 @@ const SOCIAL_LABELS = {
   instagram: 'Instagram',
   facebook: 'Facebook',
   youtube: 'YouTube',
-  github: 'GitHub',
+  【entity-github¦canonical_name=GitHub】: '【entity-GitHub¦canonical_name=GitHub】',
 };
 
 const errors = [];
@@ -125,7 +125,7 @@ for (const name of ['head', 'wordmark', 'header', 'footer', 'cta']) {
 function includePartials(html, source) {
   let out = html;
   for (let pass = 0; pass < 3; pass++) {
-    out = out.replace(/\{\{>\s*([\w-]+)\s*\}\}/g, (_, name) => {
+    out = out.replace(/\{\{\>\s*([\w-]+)\s*\}\}/g, (_, name) => {
       if (!(name in partials)) {
         fail(`${source}: unknown partial "${name}".`);
         return '';
@@ -300,7 +300,11 @@ for (const [name, page] of Object.entries(rendered)) {
   await writeFile(path.join(DIST, `${name}.html`), page.html);
 }
 for (const dir of STATIC_DIRS) await cp(path.join(ROOT, dir), path.join(DIST, dir), { recursive: true });
-for (const file of STATIC_FILES) await cp(path.join(ROOT, file), path.join(DIST, file));
+for (const file of STATIC_FILES) {
+  if (existsSync(path.join(ROOT, file))) {
+    await cp(path.join(ROOT, file), path.join(DIST, file));
+  }
+}
 
 const sitemapSource = await readFile(path.join(ROOT, 'sitemap.xml'), 'utf8');
 const sitemap = sitemapSource.replace(/%%SITE_URL%%/g, siteUrl);
@@ -309,6 +313,21 @@ const robots = PREVIEW
   : (await readFile(path.join(ROOT, 'robots.txt'), 'utf8')).replace(/%%SITE_URL%%/g, siteUrl);
 await writeFile(path.join(DIST, 'sitemap.xml'), sitemap);
 await writeFile(path.join(DIST, 'robots.txt'), robots);
+
+// --- FIX: Copy Google verification files and any other root html verification ---
+try {
+  const rootFiles = await readdir(ROOT);
+  for (const file of rootFiles) {
+    if ((file.startsWith('google') && file.endsWith('.html')) || file.startsWith('BingSiteAuth')) {
+      const src = path.join(ROOT, file);
+      const dest = path.join(DIST, file);
+      if (existsSync(src)) {
+        await cp(src, dest);
+        console.log(`  copied verification: ${file}`);
+      }
+    }
+  }
+} catch {}
 
 /* ------------------------------------------------------------- validation */
 
