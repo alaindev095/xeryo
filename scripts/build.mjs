@@ -174,28 +174,27 @@ function buildJsonLd(meta) {
   const graphs = [];
   const orgId = `${siteUrl}/#organization`;
 
-  if (meta.path === '/') {
-    const organization = {
-      '@type': 'Organization',
-      '@id': orgId,
-      name: 'Xeryo',
-      url: `${siteUrl}/`,
-      logo: { '@type': 'ImageObject', url: siteUrl + LOGO_PATH, width: 512, height: 512 },
-      description: 'Xeryo is a technology company building practical digital products. Its first product is Umunara Internship.',
-    };
-    if (config.contactEmail) organization.email = config.contactEmail;
-    if (Object.keys(config.social).length) organization.sameAs = Object.values(config.social);
+  // Organization and WebSite schema included globally for search engines
+  const organization = {
+    '@type': 'Organization',
+    '@id': orgId,
+    name: 'Xeryo',
+    url: `${siteUrl}/`,
+    logo: { '@type': 'ImageObject', url: siteUrl + LOGO_PATH, width: 512, height: 512 },
+    description: 'Xeryo is a technology company building practical digital products. Its first product is Umunara Internship.',
+  };
+  if (config.contactEmail) organization.email = config.contactEmail;
+  if (Object.keys(config.social).length) organization.sameAs = Object.values(config.social);
 
-    const website = {
-      '@type': 'WebSite',
-      '@id': `${siteUrl}/#website`,
-      url: `${siteUrl}/`,
-      name: 'Xeryo',
-      inLanguage: 'en',
-      publisher: { '@id': orgId },
-    };
-    graphs.push({ '@context': 'https://schema.org', '@graph': [organization, website] });
-  }
+  const website = {
+    '@type': 'WebSite',
+    '@id': `${siteUrl}/#website`,
+    url: `${siteUrl}/`,
+    name: 'Xeryo',
+    inLanguage: 'en',
+    publisher: { '@id': orgId },
+  };
+  graphs.push({ '@context': 'https://schema.org', '@graph': [organization, website] });
 
   if (Array.isArray(meta.breadcrumb) && meta.breadcrumb.length) {
     const trail = [['Home', '/'], ...meta.breadcrumb];
